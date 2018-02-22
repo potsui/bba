@@ -63,12 +63,6 @@ class TUIOMapView {
     int row = 0;
     text("Place the hospitals", text_frame.x, text_frame.get_y(row++));
     text("so they serve the towns", text_frame.x, text_frame.get_y(row++));
-    if (model.hospitals_left() < model.hospitals_allowed) {
-      text("Score: " + model.score(), text_frame.x, text_frame.get_y(row++));
-    }
-    if (model.hospitals_left() > 0) {
-      text("Hospitals left: " + model.hospitals_left(), text_frame.x, text_frame.get_y(row++));
-    }
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {

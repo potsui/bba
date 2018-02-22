@@ -54,10 +54,6 @@ class MapView {
     fill(0);
     text("Place the hospitals", x+map_width - 140, y+20);
     text("so they serve the towns", x+map_width - 140, y+32);
-    text("Score: " + model.score(), x+map_width - 140, y+44);
-    if (model.hospitals_left() > 0) {
-      text("Hospitals left: " + model.hospitals_left(), x+map_width - 140, y+56);
-    }
   }
   
   // Handles a mouse press event. 
