@@ -22,48 +22,13 @@ class MapModel {
     }
   }
   
-  // Update each cell's distance to the nearest hospital, 
-  // using Dijkstra's algorithm
-  void update_cell_distances() {
-    if (num_hospitals() == 0) {
-      clear_cell_distances();
-      return;
-    } 
-    ArrayList<MapCellModel> new_cells = new ArrayList<MapCellModel>();
-    ArrayList<MapCellModel> edge_cells = new ArrayList<MapCellModel>();
-    ArrayList<MapCellModel> old_cells = new ArrayList<MapCellModel>();
-     for (MapCellModel[] cell_modelRow : cell_models) {
-       for (MapCellModel cell_model : cell_modelRow) {
-        if (cell_model.has_hospital) {
-          cell_model.distance = cell_model.terrain_difficulty();
-          edge_cells.add(cell_model);
-        }
-        else {
-          new_cells.add(cell_model);
-        }
-      }
-    }
-    while (!edge_cells.isEmpty()) {
-      int min_index = get_min_index(edge_cells);
-      MapCellModel node = edge_cells.remove(min_index);
-      ArrayList<MapCellModel> neighbors = get_neighbors(node);
-      for (MapCellModel neighbor : neighbors) {
-        if (new_cells.remove(neighbor)) {
-          neighbor.distance = node.distance + neighbor.terrain_difficulty();
-          edge_cells.add(neighbor);
-        }
-      }
-      old_cells.add(node);
-    }
-  }
-  
-  void clear_cell_distances() {
-    for (MapCellModel[] cell_modelRow : cell_models) {
-       for (MapCellModel cell_model : cell_modelRow) {
-         cell_model.distance = 0;
-       }
-    }
-  }
+  //void clear_cell_distances() {
+  //  for (MapCellModel[] cell_modelRow : cell_models) {
+  //     for (MapCellModel cell_model : cell_modelRow) {
+  //       cell_model.distance = 0;
+  //     }
+  //  }
+  //}
   
   // Goes through a list of cell models and returns the index of the one with the lowest distance.
   int get_min_index(ArrayList<MapCellModel> cell_models) {

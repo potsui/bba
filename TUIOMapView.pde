@@ -77,7 +77,6 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.put(id, cell_model);
     cell_model.add_hospital();
-    model.update_cell_distances();
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
@@ -86,7 +85,6 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.remove(id);
     cell_model.remove_hospital();
-    model.update_cell_distances();
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
@@ -98,7 +96,6 @@ class TUIOMapView {
        fiducials.put(id, new_cell_model);
        old_cell_model.remove_hospital();
        new_cell_model.add_hospital();
-       model.update_cell_distances();
     }
   }
 }
