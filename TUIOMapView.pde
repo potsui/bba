@@ -35,7 +35,7 @@ class TUIOMapView {
     base_map = loadImage("sf-map.png");
 
     tiles = new PImage[] {
-      loadImage("tiles/field.png"), 
+      loadImage("tiles/blank.png"),
       loadImage("tiles/hospital.png")
     };
 

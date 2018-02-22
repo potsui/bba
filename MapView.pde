@@ -25,7 +25,7 @@ class MapView {
     // this lives in the view, not the model, because it's more related to the 
     // presentation than to the data itself. 
     tiles = new PImage[] {
-      loadImage("tiles/field.png"), 
+      loadImage("tiles/blank.png"),
       loadImage("tiles/hospital.png")
     };
 
