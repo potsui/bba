@@ -1,15 +1,16 @@
 import java.util.Map;
 
-int ROWS_OF_TEXT = 4;
+int ROWS_OF_TEXT = 2;
 int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
-int TEXT_OFFSET_RIGHT = 140;
+int TEXT_OFFSET_RIGHT = 180;
 
 class TUIOMapView {
   int cols, rows;
   Frame camera_frame, map_frame, text_frame;
   MapCellView[][] cell_views;
   PImage[] tiles;
+  PImage base_map;
   HashMap<Integer,MapCellModel> fiducials;
   
   TUIOMapView(
@@ -30,12 +31,11 @@ class TUIOMapView {
       ROWS_OF_TEXT * TEXT_LINE_HEIGHT
     );
     fiducials = new HashMap<Integer,MapCellModel>();
-        
+
+    base_map = loadImage("sf-map.png");
+
     tiles = new PImage[] {
       loadImage("tiles/field.png"), 
-      loadImage("tiles/road.png"), 
-      loadImage("tiles/forest.png"),
-      loadImage("tiles/town.png"),
       loadImage("tiles/hospital.png")
     };
 
@@ -56,19 +56,24 @@ class TUIOMapView {
   void render(MapModel model) {
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
-        cell_views[j][i].render(model.cell_models[j][i]);
+          cell_views[j][i].render(model.cell_models[j][i]);
+      }
+    }  
+    image(base_map, map_frame.x, 
+          map_frame.y,
+          map_frame.frame_width,
+          base_map.height * map_frame.frame_width / base_map.width);
+    for (int j = 0; j < rows; j++) {
+      for (int i = 0; i < cols; i++) {
+        if (model.cell_models[j][i].has_hospital) {
+          cell_views[j][i].render(model.cell_models[j][i]);
+        }
       }
     }    
     fill(0);
     int row = 0;
-    text("Place the hospitals", text_frame.x, text_frame.get_y(row++));
-    text("so they serve the towns", text_frame.x, text_frame.get_y(row++));
-    if (model.hospitals_left() < model.hospitals_allowed) {
-      text("Score: " + model.score(), text_frame.x, text_frame.get_y(row++));
-    }
-    if (model.hospitals_left() > 0) {
-      text("Hospitals left: " + model.hospitals_left(), text_frame.x, text_frame.get_y(row++));
-    }
+    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
+    text("and other significant places", text_frame.x, text_frame.get_y(row++));
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
@@ -77,7 +82,6 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.put(id, cell_model);
     cell_model.add_hospital();
-    model.update_cell_distances();
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
@@ -86,7 +90,6 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.remove(id);
     cell_model.remove_hospital();
-    model.update_cell_distances();
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
@@ -98,7 +101,6 @@ class TUIOMapView {
        fiducials.put(id, new_cell_model);
        old_cell_model.remove_hospital();
        new_cell_model.add_hospital();
-       model.update_cell_distances();
     }
   }
 }

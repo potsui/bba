@@ -4,6 +4,7 @@ class MapView {
   int cols, rows, x, y, map_width, map_height, cell_width, cell_height;
   MapCellView[][] cell_views;
   PImage[] tiles;
+  PImage base_map;
   MapCellModel active_cell_model;
   
   // Constructor
@@ -17,15 +18,14 @@ class MapView {
     cell_width = map_width / cols;
     cell_height = map_height / rows;
     cell_views = new MapCellView[rows][cols];
+
+    base_map = loadImage("sf-map.png");
     
     // We can look up the filename for the tile image of a piece of terrain. Note that
     // this lives in the view, not the model, because it's more related to the 
     // presentation than to the data itself. 
     tiles = new PImage[] {
       loadImage("tiles/field.png"), 
-      loadImage("tiles/road.png"), 
-      loadImage("tiles/forest.png"),
-      loadImage("tiles/town.png"),
       loadImage("tiles/hospital.png")
     };
 
@@ -48,16 +48,23 @@ class MapView {
   void render(MapModel model) {
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
-        cell_views[j][i].render(model.cell_models[j][i]);
+          cell_views[j][i].render(model.cell_models[j][i]);
       }
-    }    
-    fill(0);
-    text("Place the hospitals", x+map_width - 140, y+20);
-    text("so they serve the towns", x+map_width - 140, y+32);
-    text("Score: " + model.score(), x+map_width - 140, y+44);
-    if (model.hospitals_left() > 0) {
-      text("Hospitals left: " + model.hospitals_left(), x+map_width - 140, y+56);
+    }  
+    image(base_map, 0, 
+          0,
+          map_width,
+          base_map.height * map_width / base_map.width);
+    for (int j = 0; j < rows; j++) {
+      for (int i = 0; i < cols; i++) {
+        if (model.cell_models[j][i].has_hospital) {
+          cell_views[j][i].render(model.cell_models[j][i]);
+        }
+      }
     }
+    fill(0);
+    text("Place markers on your home", x+map_width - 180, y+20);
+    text("and other significant places", x+map_width - 180, y+32);
   }
   
   // Handles a mouse press event. 
@@ -70,7 +77,6 @@ class MapView {
     if (cell_model.is_free() && model.num_hospitals() < model.hospitals_allowed) {
         cell_model.has_hospital = true;
         active_cell_model = cell_model;
-        model.update_cell_distances();
     }
     else if (cell_model.has_hospital) {
       active_cell_model = cell_model;
@@ -91,7 +97,6 @@ class MapView {
        active_cell_model.has_hospital = false;
        cell_model.has_hospital = true;
        active_cell_model = cell_model;
-       model.update_cell_distances();
       }
     }
   }
