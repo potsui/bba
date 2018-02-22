@@ -5,6 +5,7 @@ class MapView {
   MapCellView[][] cell_views;
   PImage[] tiles;
   PImage base_map;
+  PImage timeline;
   MapCellModel active_cell_model;
   
   // Constructor
@@ -20,6 +21,7 @@ class MapView {
     cell_views = new MapCellView[rows][cols];
 
     base_map = loadImage("sf-map.png");
+    timeline = loadImage("timeline.png");
     
     // We can look up the filename for the tile image of a piece of terrain. Note that
     // this lives in the view, not the model, because it's more related to the 
@@ -51,6 +53,10 @@ class MapView {
           0,
           map_width,
           base_map.height * map_width / base_map.width);
+    image(timeline, 0,
+          map_height - timeline.height,
+          map_width,
+          timeline.height * map_width / timeline.width);
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
         if (model.cell_models[j][i].has_hospital) {
