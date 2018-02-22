@@ -11,6 +11,7 @@ class TUIOMapView {
   MapCellView[][] cell_views;
   PImage[] tiles;
   PImage base_map;
+  PImage timeline;
   HashMap<Integer,MapCellModel> fiducials;
   
   TUIOMapView(
@@ -33,6 +34,7 @@ class TUIOMapView {
     fiducials = new HashMap<Integer,MapCellModel>();
 
     base_map = loadImage("sf-map.png");
+    timeline = loadImage("timeline.png");
 
     tiles = new PImage[] {
       loadImage("tiles/blank.png"),
@@ -57,6 +59,10 @@ class TUIOMapView {
     background(0);
     image(base_map, map_frame.x, 
           map_frame.y,
+          map_frame.frame_width,
+          base_map.height * map_frame.frame_width / base_map.width);
+    image(timeline, map_frame.x, 
+          map_frame.y + map_frame.frame_width - timeline.height,
           map_frame.frame_width,
           base_map.height * map_frame.frame_width / base_map.width);
     for (int j = 0; j < rows; j++) {
