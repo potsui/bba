@@ -20,9 +20,6 @@ class MapCellView {
   // Renders this cell
   void render(MapCellModel model) {
     image(tiles[model.terrain], x, y, cell_width, cell_height);
-    if (model.has_town) {
-       image(tiles[TOWN], x, y, cell_width, cell_height);
-    }
     if (model.has_hospital) {
        image(tiles[HOSPITAL], x, y, cell_width, cell_height);
     }

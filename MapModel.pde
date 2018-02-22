@@ -6,7 +6,7 @@ class MapModel {
   int rows, cols, hospitals_allowed;
   
   // Constructor
-  MapModel(int[][] terrain, int[][] towns, int _hospitals_allowed) {
+  MapModel(int[][] terrain, int _hospitals_allowed) {
     rows = terrain.length;
     cols = terrain[0].length;
     hospitals_allowed = _hospitals_allowed;
@@ -15,9 +15,6 @@ class MapModel {
       for (int i = 0; i < cols; i++) {
         cell_models[j][i] = new MapCellModel(i, j, terrain[j][i]);
       }
-    }
-    for (int[] townData : towns) {
-       cell_models[townData[1]][townData[0]].add_town();
     }
   }
   

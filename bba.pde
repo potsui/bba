@@ -30,15 +30,11 @@ int[][] terrain = {
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 };
-int[][] towns = {
-  {0, 0}, {3,3}, {20, 21}, {18, 20}, {17, 3}, {15,16}, {17, 16}, 
-  {17, 14}, {14, 17}, {10, 7}, {6, 12}
-};
 
 void setup() {
    size(576, 576);
    tuioClient  = new TuioProcessing(this);
-   model = new MapModel(terrain, towns, 3);
+   model = new MapModel(terrain, 3);
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
 }
 
