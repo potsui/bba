@@ -54,11 +54,7 @@ class TUIOMapView {
   }
   
   void render(MapModel model) {
-    for (int j = 0; j < rows; j++) {
-      for (int i = 0; i < cols; i++) {
-          cell_views[j][i].render(model.cell_models[j][i]);
-      }
-    }  
+    background(0);
     image(base_map, map_frame.x, 
           map_frame.y,
           map_frame.frame_width,

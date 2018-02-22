@@ -46,11 +46,7 @@ class MapView {
   // work is delegated to the individual MapCellViews, but we do also show
   // the score and instructions text. 
   void render(MapModel model) {
-    for (int j = 0; j < rows; j++) {
-      for (int i = 0; i < cols; i++) {
-          cell_views[j][i].render(model.cell_models[j][i]);
-      }
-    }  
+    background(0);
     image(base_map, 0, 
           0,
           map_width,
