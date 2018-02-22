@@ -10,6 +10,7 @@ class TUIOMapView {
   Frame camera_frame, map_frame, text_frame;
   MapCellView[][] cell_views;
   PImage[] tiles;
+  PImage base_map;
   HashMap<Integer,MapCellModel> fiducials;
   
   TUIOMapView(
@@ -30,7 +31,9 @@ class TUIOMapView {
       ROWS_OF_TEXT * TEXT_LINE_HEIGHT
     );
     fiducials = new HashMap<Integer,MapCellModel>();
-        
+
+    base_map = loadImage("sf-map.png");
+
     tiles = new PImage[] {
       loadImage("tiles/field.png"), 
       loadImage("tiles/hospital.png")
@@ -53,7 +56,18 @@ class TUIOMapView {
   void render(MapModel model) {
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
-        cell_views[j][i].render(model.cell_models[j][i]);
+          cell_views[j][i].render(model.cell_models[j][i]);
+      }
+    }  
+    image(base_map, map_frame.x, 
+          map_frame.y,
+          map_frame.frame_width,
+          base_map.height * map_frame.frame_width / base_map.width);
+    for (int j = 0; j < rows; j++) {
+      for (int i = 0; i < cols; i++) {
+        if (model.cell_models[j][i].has_hospital) {
+          cell_views[j][i].render(model.cell_models[j][i]);
+        }
       }
     }    
     fill(0);
