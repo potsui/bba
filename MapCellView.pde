@@ -1,5 +1,5 @@
 // Constants
-int TOWN = 3;
+int BLANK = 0;
 int HOSPITAL = 4;
 
 // MapCellView takes care of rendering one cell on the map. 
@@ -19,7 +19,7 @@ class MapCellView {
   
   // Renders this cell
   void render(MapCellModel model) {
-    image(tiles[model.terrain], x, y, cell_width, cell_height);
+    image(tiles[BLANK], x, y, cell_width, cell_height);
     if (model.has_hospital) {
        image(tiles[HOSPITAL], x, y, cell_width, cell_height);
     }
