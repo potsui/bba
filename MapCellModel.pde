@@ -1,6 +1,4 @@
 // Constants
-float[] TERRAIN_WEIGHTS = {1, 0.3, 3};
-int MAX_VALUE = 10;
 
 // MapCellModel manages state for one map cell. 
 class MapCellModel {
@@ -24,10 +22,6 @@ class MapCellModel {
   
   void remove_hospital() {
      has_hospital = false; 
-  }
-  
-  float terrain_difficulty() {
-    return TERRAIN_WEIGHTS[terrain];
   }
   
   // Defines how MapCellModels should be compared with each other
