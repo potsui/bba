@@ -23,9 +23,6 @@ class MapView {
     // presentation than to the data itself. 
     tiles = new PImage[] {
       loadImage("tiles/field.png"), 
-      loadImage("tiles/road.png"), 
-      loadImage("tiles/forest.png"),
-      loadImage("tiles/town.png"),
       loadImage("tiles/hospital.png")
     };
 

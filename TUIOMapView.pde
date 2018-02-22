@@ -33,9 +33,6 @@ class TUIOMapView {
         
     tiles = new PImage[] {
       loadImage("tiles/field.png"), 
-      loadImage("tiles/road.png"), 
-      loadImage("tiles/forest.png"),
-      loadImage("tiles/town.png"),
       loadImage("tiles/hospital.png")
     };
 

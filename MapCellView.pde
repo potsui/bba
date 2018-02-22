@@ -1,6 +1,6 @@
 // Constants
 int BLANK = 0;
-int HOSPITAL = 4;
+int HOSPITAL = 1;
 
 // MapCellView takes care of rendering one cell on the map. 
 class MapCellView {
