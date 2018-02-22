@@ -4,6 +4,7 @@ class MapView {
   int cols, rows, x, y, map_width, map_height, cell_width, cell_height;
   MapCellView[][] cell_views;
   PImage[] tiles;
+  PImage base_map;
   MapCellModel active_cell_model;
   
   // Constructor
@@ -17,6 +18,8 @@ class MapView {
     cell_width = map_width / cols;
     cell_height = map_height / rows;
     cell_views = new MapCellView[rows][cols];
+
+    base_map = loadImage("sf-map.png");
     
     // We can look up the filename for the tile image of a piece of terrain. Note that
     // this lives in the view, not the model, because it's more related to the 
@@ -45,9 +48,20 @@ class MapView {
   void render(MapModel model) {
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
-        cell_views[j][i].render(model.cell_models[j][i]);
+          cell_views[j][i].render(model.cell_models[j][i]);
       }
-    }    
+    }  
+    image(base_map, 0, 
+          0,
+          map_width,
+          base_map.height * map_width / base_map.width);
+    for (int j = 0; j < rows; j++) {
+      for (int i = 0; i < cols; i++) {
+        if (model.cell_models[j][i].has_hospital) {
+          cell_views[j][i].render(model.cell_models[j][i]);
+        }
+      }
+    }
     fill(0);
     text("Place the hospitals", x+map_width - 140, y+20);
     text("so they serve the towns", x+map_width - 140, y+32);
