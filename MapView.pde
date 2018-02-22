@@ -63,8 +63,8 @@ class MapView {
       }
     }
     fill(0);
-    text("Place the hospitals", x+map_width - 140, y+20);
-    text("so they serve the towns", x+map_width - 140, y+32);
+    text("Place markers on your home", x+map_width - 180, y+20);
+    text("and other significant places", x+map_width - 180, y+32);
   }
   
   // Handles a mouse press event. 

@@ -1,9 +1,9 @@
 import java.util.Map;
 
-int ROWS_OF_TEXT = 4;
+int ROWS_OF_TEXT = 2;
 int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
-int TEXT_OFFSET_RIGHT = 140;
+int TEXT_OFFSET_RIGHT = 180;
 
 class TUIOMapView {
   int cols, rows;
@@ -72,8 +72,8 @@ class TUIOMapView {
     }    
     fill(0);
     int row = 0;
-    text("Place the hospitals", text_frame.x, text_frame.get_y(row++));
-    text("so they serve the towns", text_frame.x, text_frame.get_y(row++));
+    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
+    text("and other significant places", text_frame.x, text_frame.get_y(row++));
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
