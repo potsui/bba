@@ -15,15 +15,15 @@ class TextInputWindow extends PApplet {
 
   void setup() {
     background(255);
-    textAlign(CENTER, CENTER);
+    textAlign(CENTER);
     textSize(14);
     fill(0);
   }
 
   void draw() {
     background(255);
-    text(prompt, 0, -20, width, height);
-    text(input, 0, 20, width, height);
+    text(prompt, 0, 0, width, height);
+    text(input, 0, 50, width, height);
   }
 
   void mousePressed() {
