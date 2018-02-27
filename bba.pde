@@ -1,7 +1,7 @@
 import TUIO.*;
 TuioProcessing tuioClient;
 
-PWindow win;
+TextInputWindow win;
 
 MapModel model;
 TUIOMapView view;
@@ -39,7 +39,7 @@ void setup() {
    model = new MapModel(terrain, 3);
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
 
-   win = new PWindow();
+   win = new TextInputWindow();
 }
 
 void draw() {
