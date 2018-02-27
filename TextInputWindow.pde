@@ -31,14 +31,14 @@ class TextInputWindow extends PApplet {
   }
   
   void keyPressed() {
-  if (keyCode == BACKSPACE) {
-    if (input.length() > 0) {
-      input = input.substring(0, input.length()-1);
+    if (keyCode == BACKSPACE) {
+      if (input.length() > 0) {
+        input = input.substring(0, input.length()-1);
+      }
+    } else if (keyCode == DELETE) {
+      input = "";
+    } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
+      input = input + key;
     }
-  } else if (keyCode == DELETE) {
-    input = "";
-  } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
-    input = input + key;
   }
-}
 }
