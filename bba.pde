@@ -1,6 +1,8 @@
 import TUIO.*;
 TuioProcessing tuioClient;
 
+TextInputWindow win;
+
 MapModel model;
 TUIOMapView view;
 
@@ -31,11 +33,16 @@ int[][] terrain = {
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 };
 
+void settings() {
+  size(576, 576);
+}
+
 void setup() {
-   size(576, 576);
    tuioClient  = new TuioProcessing(this);
    model = new MapModel(terrain, 3);
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
+
+   win = new TextInputWindow();
 }
 
 void draw() {
