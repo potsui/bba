@@ -117,22 +117,20 @@ class TUIOMapView {
        old_cell_model.remove_hospital();
        new_cell_model.add_hospital(); 
     }
-    println("map_frame col is ", col);
-    println("x is ", x);
 //  Change map based on fiducial in map square
     if ((id == 0) &&
-        (x >= 0.07) && (x <= (0.12)) && 
-        (y >= 0.07) && (y <= (0.12))){
+        (col >= 1) && (col <= 3) && 
+        (row >= 1) && (row <= 3)){
       base_map = loadImage("sf-map.png");;
     }
     if ((id == 1) &&
-        (x >= 0.07) && (x <= (0.12)) && 
-        (y >= 0.07) && (y <= (0.12))){
+        (col >= 1) && (col <= 3) && 
+        (row >= 1) && (row <= 3)){
       base_map = loadImage("palo_alto.png");;
     }
     if ((id == 2) &&
-        (x >= 0.07) && (x <= (0.12)) && 
-        (y >= 0.07) && (y <= (0.12))){
+        (col >= 1) && (col <= 3) && 
+        (row >= 1) && (row <= 3)){
       base_map = loadImage("east_palo_alto.png");;
         
     }
