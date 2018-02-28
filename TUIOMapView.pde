@@ -7,7 +7,7 @@ int TEXT_OFFSET_RIGHT = 180;
 
 class TUIOMapView {
   int cols, rows;
-  Frame camera_frame, map_frame, text_frame;
+  Frame camera_frame, map_frame, text_frame, map_fiducial_frame;
   MapCellView[][] cell_views;
   PImage[] tiles;
   PImage base_map;
@@ -23,6 +23,7 @@ class TUIOMapView {
     rows = _rows;
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
+    map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55);
     text_frame = new Frame(
       1, 
       ROWS_OF_TEXT, 
@@ -33,7 +34,7 @@ class TUIOMapView {
     );
     fiducials = new HashMap<Integer,MapCellModel>();
 
-    base_map = loadImage("sf-map.png");
+    base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
 
     tiles = new PImage[] {
@@ -65,6 +66,18 @@ class TUIOMapView {
           map_frame.y + map_frame.frame_width - timeline.height,
           map_frame.frame_width,
           base_map.height * map_frame.frame_width / base_map.width);
+     // Create the map-fiducial-holder square 
+    stroke(0, 0, 0);
+    fill(0, 0, 0, 20);
+    rect(map_fiducial_frame.x, 
+        map_fiducial_frame.y, 
+        map_fiducial_frame.frame_width, 
+        map_fiducial_frame.frame_height, 
+        7);
+    fill(0);
+    text("Place map fiducial here", map_fiducial_frame.x, map_fiducial_frame.y);
+
+    // Checks if has hospital, then renders
     for (int j = 0; j < rows; j++) {
       for (int i = 0; i < cols; i++) {
         if (model.cell_models[j][i].has_hospital) {
@@ -102,7 +115,26 @@ class TUIOMapView {
     if (new_cell_model != old_cell_model) {
        fiducials.put(id, new_cell_model);
        old_cell_model.remove_hospital();
-       new_cell_model.add_hospital();
+       new_cell_model.add_hospital(); 
+    }
+    println("map_frame col is ", col);
+    println("x is ", x);
+//  Change map based on fiducial in map square
+    if ((id == 0) &&
+        (x >= 0.07) && (x <= (0.12)) && 
+        (y >= 0.07) && (y <= (0.12))){
+      base_map = loadImage("sf-map.png");;
+    }
+    if ((id == 1) &&
+        (x >= 0.07) && (x <= (0.12)) && 
+        (y >= 0.07) && (y <= (0.12))){
+      base_map = loadImage("palo_alto.png");;
+    }
+    if ((id == 2) &&
+        (x >= 0.07) && (x <= (0.12)) && 
+        (y >= 0.07) && (y <= (0.12))){
+      base_map = loadImage("east_palo_alto.png");;
+        
     }
   }
 }
