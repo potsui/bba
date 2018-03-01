@@ -2,10 +2,10 @@ class Fiducial {
   int id;
   MapCellModel model;
   String text;
-  int x;
-  int y;
+  float x;
+  float y;
   
-  Fiducial(int _id, MapCellModel _model, String _text, int _x, int _y) {
+  Fiducial(int _id, MapCellModel _model, String _text, float _x, float _y) {
     id = _id;
     model = _model;
     text = _text;
@@ -18,8 +18,8 @@ class Fiducial {
   void setModel(MapCellModel _model) { model = _model; }
   String getText() { return text; }
   void setText(String _text) { text = _text; }
-  int getX() { return x; }
-  void setText(int _x) { x = _x; }
-  int getY() { return y; }
-  void setY(int _y) { y = _y; }
+  float getX() { return x; }
+  void setText(float _x) { x = _x; }
+  float getY() { return y; }
+  void setY(float _y) { y = _y; }
 }
