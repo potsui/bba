@@ -3,9 +3,7 @@ import processing.net.*;
 
 TuioProcessing tuioClient;
 Client c; 
-int data[]; 
-
-TextInputWindow win;
+int data[];
 
 MapModel model;
 TUIOMapView view;
@@ -45,8 +43,6 @@ void setup() {
    tuioClient  = new TuioProcessing(this);
    model = new MapModel(terrain, 3);
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
-
-   win = new TextInputWindow();
    c = new Client(this, "127.0.0.1", 12345);
 }
 
@@ -82,4 +78,8 @@ void updateTuioObject(TuioObject obj) {
   println("MOVE", id, x, y);
   c.write(2 + " " + id + " " + x + " " + y + "\n");
   view.handle_move_fiducial(id, x, y, model);
+}
+
+void keyPressed() {
+  view.handle_key_pressed(keyCode);
 }

@@ -13,6 +13,8 @@ class TUIOMapView {
   PImage base_map;
   PImage timeline;
   HashMap<Integer,MapCellModel> fiducials;
+  HashMap<Integer,String> inputs;
+  int lastMoved;
   
   TUIOMapView(
       int _cols, int _rows, 
@@ -33,6 +35,7 @@ class TUIOMapView {
       ROWS_OF_TEXT * TEXT_LINE_HEIGHT
     );
     fiducials = new HashMap<Integer,MapCellModel>();
+    inputs = new HashMap<Integer, String>();
 
     base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
@@ -90,7 +93,13 @@ class TUIOMapView {
           cell_views[j][i].render(model.cell_models[j][i]);
         }
       }
-    }    
+    }
+    
+    // Renders text input for any markers that have them
+    for (int id: inputs.keySet()) {
+      text(inputs.get(id), map_fiducial_frame.x, map_fiducial_frame.y);
+    }
+
     fill(0);
     int row = 0;
     text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
@@ -98,22 +107,27 @@ class TUIOMapView {
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
+    lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.put(id, cell_model);
+    inputs.put(lastMoved, input);
     cell_model.add_hospital();
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
+    lastMoved = -1;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.remove(id);
+    inputs.remove(lastMoved);
     cell_model.remove_hospital();
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
+    lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
     MapCellModel new_cell_model = model.cell_models[row][col];
@@ -121,9 +135,10 @@ class TUIOMapView {
     if (new_cell_model != old_cell_model) {
        fiducials.put(id, new_cell_model);
        old_cell_model.remove_hospital();
-       new_cell_model.add_hospital(); 
+       new_cell_model.add_hospital();
     }
-//  Change map based on fiducial in map square & change to city icons
+
+    //  Change map based on fiducial in map square & change to city icons
     if ((id == 0) &&
         (col >= 1) && (col <= 3) && 
         (row >= 1) && (row <= 3)){
@@ -155,5 +170,20 @@ class TUIOMapView {
     if (id == 5){ 
       new_cell_model.is_glo(); // Change icon to GLO
     }
+  }
+  
+  void handle_key_pressed(int keyCode) {
+    String input = inputs.get(lastMoved);
+    if (keyCode == BACKSPACE) {
+      if (input.length() > 0) {
+        input = input.substring(0, input.length()-1);
+      }
+    } else if (keyCode == DELETE) {
+      input = "";
+    } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
+      input = input + key;
+    }
+    inputs.put(lastMoved, input);
+    println(input);
   }
 }
