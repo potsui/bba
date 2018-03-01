@@ -3,7 +3,7 @@
 // MapCellModel manages state for one map cell. 
 class MapCellModel {
   
-  int id, i, j, terrain;
+  int id, i, j, terrain; //is_city;
   float distance;
   boolean has_hospital;
   
@@ -13,6 +13,7 @@ class MapCellModel {
     j = _j; 
     terrain = _terrain;
     has_hospital = false;
+    is_city = 0;
   }
   
   // Adds a hospital
@@ -23,6 +24,20 @@ class MapCellModel {
   void remove_hospital() {
      has_hospital = false; 
   }
+  
+/*  //detects which city if map fiducial
+  void is_sf() {
+    is_city = 2;
+  }
+  
+  void is_pa() {
+    is_city = 3;
+  }
+  
+  void is_epa() {
+    is_city = 4;
+  } */
+  
   
   // Defines how MapCellModels should be compared with each other
   // for equality. Here, two MapCellModels are equal if they 
