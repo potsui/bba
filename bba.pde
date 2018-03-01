@@ -2,8 +2,7 @@ import TUIO.*;
 import processing.net.*; 
 
 TuioProcessing tuioClient;
-Client c; 
-int data[];
+Client c;
 
 MapModel model;
 TUIOMapView view;
