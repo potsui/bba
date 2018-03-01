@@ -1,6 +1,9 @@
 // Constants
 int BLANK = 0;
 int HOSPITAL = 1;
+//int SF = 2;
+//int PA = 3;
+//int EPA = 4;
 
 // MapCellView takes care of rendering one cell on the map. 
 class MapCellView {
@@ -23,5 +26,8 @@ class MapCellView {
     if (model.has_hospital) {
        image(tiles[HOSPITAL], x, y, cell_width, cell_height);
     }
+ /*   if (model.is_city == 2){
+       image(tiles[SF], x, y, cell_width, cell_height);
+    }*/
   }
 }

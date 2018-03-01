@@ -39,7 +39,10 @@ class TUIOMapView {
 
     tiles = new PImage[] {
       loadImage("tiles/blank.png"),
-      loadImage("tiles/hospital.png")
+      loadImage("tiles/hospital.png"),
+    //  loadImage("tiles/stanford_icon.png"),
+      //loadImage("tiles/paloaltoicon.png"),
+      //loadImage("tiles/epaicon.png")
     };
 
     cell_views = new MapCellView[rows][cols];
@@ -97,6 +100,9 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.put(id, cell_model);
     cell_model.add_hospital();
+   /* if (id == 0) {
+      cell_model.is_sf();
+    }*/
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
