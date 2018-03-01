@@ -23,7 +23,7 @@ class TUIOMapView {
     rows = _rows;
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
-    map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55);
+    map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55); //TODO: Don't hardcode values
     text_frame = new Frame(
       1, 
       ROWS_OF_TEXT, 
@@ -123,7 +123,8 @@ class TUIOMapView {
        old_cell_model.remove_hospital();
        new_cell_model.add_hospital(); 
     }
-//  Change map based on fiducial in map square & change to city icons
+    //  Change map based on fiducial in map square & change to city icons
+    //TODO: Place in separate functio and do for add_fiducial too
     if ((id == 0) &&
         (col >= 1) && (col <= 3) && 
         (row >= 1) && (row <= 3)){
