@@ -64,7 +64,7 @@ class TUIOMapView {
   }
   
   void render(MapModel model) {
-    background(0);
+    background(255);
     image(base_map, map_frame.x, 
           map_frame.y,
           map_frame.frame_width,
