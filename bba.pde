@@ -1,10 +1,14 @@
 import TUIO.*;
-TuioProcessing tuioClient;
+import processing.net.*;
 
+TuioProcessing tuioClient;
+Client c;
 TextInputWindow win;
 
 MapModel model;
 TUIOMapView view;
+
+String data;
 
 int[][] terrain = {
   { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, 
@@ -43,10 +47,18 @@ void setup() {
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
 
    win = new TextInputWindow();
+   c = new Client(this, "sharedstory.herokuapp.com", 80);
+   c.write("GET / HTTP/1.1\r\n");
+   c.write("Host: sharedstory.herokuapp.com\r\n");
+   c.write("\r\n");
 }
 
 void draw() {
   view.render(model);
+  if (c.available() > 0) {
+    data += c.readString();
+    println(data);
+  }
 }
 
 void addTuioObject(TuioObject obj) {
