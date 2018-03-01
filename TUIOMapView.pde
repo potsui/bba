@@ -95,7 +95,9 @@ class TUIOMapView {
     
     // Renders text input for any markers that have them
     for (int id: fiducials.keySet()) {
-      text(fiducials.get(id).getText(), map_fiducial_frame.x, map_fiducial_frame.y); //TODO
+      Fiducial f = fiducials.get(id);
+      text(f.getText(), map_frame.get_x(camera_frame.get_row(f.getX())),
+           map_frame.get_y(camera_frame.get_col(f.getY())));
     }
 
     fill(0);
@@ -158,7 +160,6 @@ class TUIOMapView {
     }
     
     // Change icons to event fiducials
-    
     if (id == 3){ 
       new_cell_model.is_per(); // Change icon to PER
     }
@@ -168,6 +169,9 @@ class TUIOMapView {
     if (id == 5){ 
       new_cell_model.is_glo(); // Change icon to GLO
     }
+    f.setX(x);
+    f.setY(y);
+    fiducials.put(id, f);
   }
   
   void handle_key_pressed(int keyCode) {

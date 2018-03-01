@@ -19,7 +19,7 @@ class Fiducial {
   String getText() { return text; }
   void setText(String _text) { text = _text; }
   float getX() { return x; }
-  void setText(float _x) { x = _x; }
+  void setX(float _x) { x = _x; }
   float getY() { return y; }
   void setY(float _y) { y = _y; }
 }
