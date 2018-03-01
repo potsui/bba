@@ -39,10 +39,13 @@ class TUIOMapView {
 
     tiles = new PImage[] {
       loadImage("tiles/blank.png"),
-      loadImage("tiles/hospital.png"),
-    //  loadImage("tiles/stanford_icon.png"),
-      //loadImage("tiles/paloaltoicon.png"),
-      //loadImage("tiles/epaicon.png")
+      loadImage("tiles/you_icon.png"), // changed from hospital
+      loadImage("tiles/stanford_icon.png"),
+      loadImage("tiles/paloaltoicon.png"),
+      loadImage("tiles/epaicon.png"),
+      loadImage("tiles/personal_icon.png"),
+      loadImage("tiles/community_icon.png"),
+      loadImage("tiles/global_icon.png")
     };
 
     cell_views = new MapCellView[rows][cols];
@@ -100,9 +103,6 @@ class TUIOMapView {
     MapCellModel cell_model = model.cell_models[row][col];
     fiducials.put(id, cell_model);
     cell_model.add_hospital();
-   /* if (id == 0) {
-      cell_model.is_sf();
-    }*/
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
@@ -123,22 +123,37 @@ class TUIOMapView {
        old_cell_model.remove_hospital();
        new_cell_model.add_hospital(); 
     }
-//  Change map based on fiducial in map square
+//  Change map based on fiducial in map square & change to city icons
     if ((id == 0) &&
         (col >= 1) && (col <= 3) && 
         (row >= 1) && (row <= 3)){
       base_map = loadImage("sf-map.png");;
+      new_cell_model.is_sf(); // Change icon to SF
     }
     if ((id == 1) &&
         (col >= 1) && (col <= 3) && 
         (row >= 1) && (row <= 3)){
       base_map = loadImage("palo_alto.png");;
+      new_cell_model.is_pa(); // Change icon to PA
+
     }
     if ((id == 2) &&
         (col >= 1) && (col <= 3) && 
         (row >= 1) && (row <= 3)){
-      base_map = loadImage("east_palo_alto.png");;
-        
+      base_map = loadImage("east_palo_alto.png");; 
+      new_cell_model.is_epa(); // Change icon to EPA
+    }
+    
+    // Change icons to event fiducials
+    
+    if (id == 3){ 
+      new_cell_model.is_per(); // Change icon to PER
+    }
+    if (id == 4){ 
+      new_cell_model.is_com(); // Change icon to COM
+    }
+    if (id == 5){ 
+      new_cell_model.is_glo(); // Change icon to GLO
     }
   }
 }
