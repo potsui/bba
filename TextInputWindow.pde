@@ -41,4 +41,12 @@ class TextInputWindow extends PApplet {
       input = input + key;
     }
   }
+
+  String getInput() {
+    return input;
+  }
+
+  void setInput(String _input) {
+    input = _input;
+  }
 }
