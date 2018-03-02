@@ -117,6 +117,7 @@ class TUIOMapView {
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
+    if (fiducials.size()==0) return;
     lastMoved = -1;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
@@ -126,6 +127,7 @@ class TUIOMapView {
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
+    if (fiducials.size()==0) return;
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
