@@ -1,7 +1,8 @@
 import TUIO.*;
-TuioProcessing tuioClient;
+import processing.net.*; 
 
-TextInputWindow win;
+TuioProcessing tuioClient;
+Client c;
 
 MapModel model;
 TUIOMapView view;
@@ -41,8 +42,7 @@ void setup() {
    tuioClient  = new TuioProcessing(this);
    model = new MapModel(terrain, 3);
    view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
-
-   win = new TextInputWindow();
+   c = new Client(this, "127.0.0.1", 12345);
 }
 
 void draw() {
@@ -50,16 +50,35 @@ void draw() {
 }
 
 void addTuioObject(TuioObject obj) {
-    println("ADD", obj.getSymbolID());
-  view.handle_add_fiducial(obj.getSymbolID(), obj.getX(), obj.getY(), model);
+  int id = obj.getSymbolID();
+  float x = obj.getX();
+  float y = obj.getY();
+
+  println("ADD", id);
+  c.write(0 + " " + id + " " + x + " " + y + "\n");
+  view.handle_add_fiducial(id, x, y, model);
 }
 
 void removeTuioObject(TuioObject obj) {
-  println("REMOVE", obj.getSymbolID());
-  view.handle_remove_fiducial(obj.getSymbolID(), obj.getX(), obj.getY(), model);
+  int id = obj.getSymbolID();
+  float x = obj.getX();
+  float y = obj.getY();
+
+  println("REMOVE", id);
+  c.write(1 + " " + id + " " + x + " " + y + "\n");
+  view.handle_remove_fiducial(id, x, y, model);
 }
 
 void updateTuioObject(TuioObject obj) {
-  println("MOVE", obj.getSymbolID(), obj.getX(), obj.getY());
-  view.handle_move_fiducial(obj.getSymbolID(), obj.getX(), obj.getY(), model);
+  int id = obj.getSymbolID();
+  float x = obj.getX();
+  float y = obj.getY();
+
+  println("MOVE", id, x, y);
+  c.write(2 + " " + id + " " + x + " " + y + "\n");
+  view.handle_move_fiducial(id, x, y, model);
+}
+
+void keyPressed() {
+  view.handle_key_pressed(keyCode);
 }
