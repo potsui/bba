@@ -12,7 +12,8 @@ class TUIOMapView {
   PImage[] tiles;
   PImage base_map;
   PImage timeline;
-  HashMap<Integer,MapCellModel> fiducials;
+  HashMap<Integer,Fiducial> fiducials;
+  int lastMoved;
   
   TUIOMapView(
       int _cols, int _rows, 
@@ -32,7 +33,7 @@ class TUIOMapView {
       1, 
       ROWS_OF_TEXT * TEXT_LINE_HEIGHT
     );
-    fiducials = new HashMap<Integer,MapCellModel>();
+    fiducials = new HashMap<Integer,Fiducial>();
 
     base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
@@ -63,7 +64,7 @@ class TUIOMapView {
   }
   
   void render(MapModel model) {
-    background(0);
+    background(255);
     image(base_map, map_frame.x, 
           map_frame.y,
           map_frame.frame_width,
@@ -90,7 +91,15 @@ class TUIOMapView {
           cell_views[j][i].render(model.cell_models[j][i]);
         }
       }
-    }    
+    }
+    
+    // Renders text input for any markers that have them
+    for (int id: fiducials.keySet()) {
+      Fiducial f = fiducials.get(id);
+      text(f.getText(), map_frame.get_x(camera_frame.get_row(f.getX())),
+           map_frame.get_y(camera_frame.get_col(f.getY())));
+    }
+
     fill(0);
     int row = 0;
     text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
@@ -98,14 +107,18 @@ class TUIOMapView {
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
+    lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
     MapCellModel cell_model = model.cell_models[row][col];
-    fiducials.put(id, cell_model);
+    Fiducial f = new Fiducial(id, cell_model, "", x, y);
+    fiducials.put(id, f);
     cell_model.add_hospital();
   }
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
+    if (fiducials.size()==0) return;
+    lastMoved = -1;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
     MapCellModel cell_model = model.cell_models[row][col];
@@ -114,15 +127,19 @@ class TUIOMapView {
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
+    if (fiducials.size()==0) return;
+    lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
+    Fiducial f = fiducials.get(id);
     MapCellModel new_cell_model = model.cell_models[row][col];
-    MapCellModel old_cell_model = fiducials.get(id);
+    MapCellModel old_cell_model = f.getModel();
     if (new_cell_model != old_cell_model) {
-       fiducials.put(id, new_cell_model);
        old_cell_model.remove_hospital();
-       new_cell_model.add_hospital(); 
+       new_cell_model.add_hospital();
+       f.setModel(new_cell_model);
     }
+
     //  Change map based on fiducial in map square & change to city icons
     //TODO: Place in separate functio and do for add_fiducial too
     if ((id == 0) &&
@@ -146,7 +163,6 @@ class TUIOMapView {
     }
     
     // Change icons to event fiducials
-    
     if (id == 3){ 
       new_cell_model.is_per(); // Change icon to PER
     }
@@ -155,6 +171,27 @@ class TUIOMapView {
     }
     if (id == 5){ 
       new_cell_model.is_glo(); // Change icon to GLO
+    }
+    f.setX(x);
+    f.setY(y);
+    fiducials.put(id, f);
+  }
+  
+  void handle_key_pressed(int keyCode) {
+    if (fiducials.size() > 0) {
+      Fiducial f = fiducials.get(lastMoved);
+      String input = f.getText();
+      if (keyCode == BACKSPACE) {
+        if (input.length() > 0) {
+          input = input.substring(0, input.length()-1);
+        }
+      } else if (keyCode == DELETE) {
+        input = "";
+      } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
+        input = input + key;
+      }
+      f.setText(input);
+      println(input);
     }
   }
 }
