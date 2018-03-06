@@ -51,6 +51,7 @@ void setup() {
   if (view == null) view = createMapView();
   if (c == null) c = new Client(this, SERVER, PORTNO);
   sendSimpleGetRequest();
+  sendSessionData();
 }
 
 void draw() {
@@ -99,6 +100,16 @@ void sendSimpleGetRequest() {
   if (c == null) c = new Client(this, SERVER, PORTNO);
   c.write("GET / HTTP/1.1\r\n");
   c.write("Host: " + SERVER + "\r\n");
+  c.write("\r\n");
+}
+
+void sendSessionData() {
+  if (c == null) c = new Client(this, SERVER, PORTNO);
+  c.write("POST /session/add HTTP/1.1\r\n");
+  c.write("Host: " + SERVER + "\r\n");
+  c.write("Content-Type: application/json\r\n");
+  c.write("\r\n");
+  c.write("{\"key\": \"value\"}\r\n");
   c.write("\r\n");
 }
 
