@@ -1,6 +1,9 @@
 import TUIO.*;
 import processing.net.*; 
 
+int SCREEN_WIDTH = 576;
+int SCREEN_HEIGHT = 576;
+
 TuioProcessing tuioClient;
 Client c;
 
@@ -94,5 +97,5 @@ void keyPressed() {
 }
 
 TUIOMapView createMapView() {
-  return new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
+  return new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
