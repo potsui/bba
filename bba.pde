@@ -43,7 +43,7 @@ void settings() {
 void setup() {
    tuioClient  = new TuioProcessing(this);
    model = new MapModel(terrain, 3);
-   view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
+   if (view == null) view = createMapView();
 
    c = new Client(this, "sharedstory.herokuapp.com", 80);
    c.write("GET / HTTP/1.1\r\n");
@@ -60,6 +60,7 @@ void draw() {
 }
 
 void addTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
@@ -69,6 +70,7 @@ void addTuioObject(TuioObject obj) {
 }
 
 void removeTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
@@ -78,6 +80,7 @@ void removeTuioObject(TuioObject obj) {
 }
 
 void updateTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
@@ -88,4 +91,8 @@ void updateTuioObject(TuioObject obj) {
 
 void keyPressed() {
   view.handle_key_pressed(keyCode);
+}
+
+TUIOMapView createMapView() {
+  return new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
 }
