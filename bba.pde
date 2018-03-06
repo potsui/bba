@@ -65,7 +65,6 @@ void addTuioObject(TuioObject obj) {
   float y = obj.getY();
 
   println("ADD", id);
-  String postBody = 0 + " " + id + " " + x + " " + y + "\n"; // TODO POST request
   view.handle_add_fiducial(id, x, y, model);
 }
 
@@ -75,7 +74,6 @@ void removeTuioObject(TuioObject obj) {
   float y = obj.getY();
 
   println("REMOVE", id);
-  String postBody = 1 + " " + id + " " + x + " " + y + "\n"; // TODO POST request
   view.handle_remove_fiducial(id, x, y, model);
 }
 
@@ -85,7 +83,6 @@ void updateTuioObject(TuioObject obj) {
   float y = obj.getY();
 
   println("MOVE", id, x, y);
-  String postBody = 2 + " " + id + " " + x + " " + y + "\n"; // TODO POST Request
   view.handle_move_fiducial(id, x, y, model);
 }
 
