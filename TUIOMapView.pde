@@ -6,6 +6,8 @@ int TEXT_OFFSET_TOP = 20;
 int TEXT_OFFSET_RIGHT = 185;
 
 class TUIOMapView {
+  PApplet sketchRef;
+  DatabaseServer db;
   int cols, rows;
   Frame camera_frame, map_frame, text_frame, map_fiducial_frame;
   MapCellView[][] cell_views;
@@ -14,14 +16,18 @@ class TUIOMapView {
   PImage timeline;
   HashMap<Integer,Fiducial> fiducials;
   int lastMoved;
+  String data;
   
   TUIOMapView(
+      PApplet _sketchRef,
       int _cols, int _rows, 
       int x_in, int y_in, int width_in, int height_in, 
       int x_out, int y_out, int width_out, int height_out
   ) {
+    sketchRef = _sketchRef;
     cols = _cols;
     rows = _rows;
+    db = new DatabaseServer(sketchRef, null, 0);
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
     map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55); //TODO: Don't hardcode values
@@ -106,9 +112,12 @@ class TUIOMapView {
     text("and other significant places.", text_frame.x, text_frame.get_y(row++));
     text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
     text("you last touched.", text_frame.x, text_frame.get_y(row++));
+    data = db.getData();
+    if (data != null) println(data);
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
+    db.sendSimpleGetRequest();
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
