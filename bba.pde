@@ -3,6 +3,8 @@ import processing.net.*;
 
 int SCREEN_WIDTH = 576;
 int SCREEN_HEIGHT = 576;
+int PORTNO = 80;
+String SERVER = "sharedstory.herokuapp.com";
 
 TuioProcessing tuioClient;
 Client c;
@@ -47,11 +49,8 @@ void setup() {
   tuioClient  = new TuioProcessing(this);
   model = new MapModel(terrain, 3);
   if (view == null) view = createMapView();
-
-  c = new Client(this, "sharedstory.herokuapp.com", 80);
-  c.write("GET / HTTP/1.1\r\n");
-  c.write("Host: sharedstory.herokuapp.com\r\n");
-  c.write("\r\n");
+  if (c == null) c = new Client(this, SERVER, PORTNO);
+  sendSimpleGetRequest();
 }
 
 void draw() {
@@ -94,6 +93,13 @@ void updateTuioObject(TuioObject obj) {
 
 void keyPressed() {
   view.handle_key_pressed(keyCode);
+}
+
+void sendSimpleGetRequest() {
+  if (c == null) c = new Client(this, SERVER, PORTNO);
+  c.write("GET / HTTP/1.1\r\n");
+  c.write("Host: " + SERVER + "\r\n");
+  c.write("\r\n");
 }
 
 TUIOMapView createMapView() {
