@@ -3,7 +3,7 @@ import java.util.Map;
 int ROWS_OF_TEXT = 2;
 int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
-int TEXT_OFFSET_RIGHT = 180;
+int TEXT_OFFSET_RIGHT = 185;
 
 class TUIOMapView {
   int cols, rows;
@@ -103,7 +103,9 @@ class TUIOMapView {
     fill(0);
     int row = 0;
     text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
-    text("and other significant places", text_frame.x, text_frame.get_y(row++));
+    text("and other significant places.", text_frame.x, text_frame.get_y(row++));
+    text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
+    text("you last touched.", text_frame.x, text_frame.get_y(row++));
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
