@@ -44,14 +44,14 @@ void settings() {
 }
 
 void setup() {
-   tuioClient  = new TuioProcessing(this);
-   model = new MapModel(terrain, 3);
-   if (view == null) view = createMapView();
+  tuioClient  = new TuioProcessing(this);
+  model = new MapModel(terrain, 3);
+  if (view == null) view = createMapView();
 
-   c = new Client(this, "sharedstory.herokuapp.com", 80);
-   c.write("GET / HTTP/1.1\r\n");
-   c.write("Host: sharedstory.herokuapp.com\r\n");
-   c.write("\r\n");
+  c = new Client(this, "sharedstory.herokuapp.com", 80);
+  c.write("GET / HTTP/1.1\r\n");
+  c.write("Host: sharedstory.herokuapp.com\r\n");
+  c.write("\r\n");
 }
 
 void draw() {
