@@ -43,7 +43,7 @@ void settings() {
 void setup() {
    tuioClient  = new TuioProcessing(this);
    model = new MapModel(terrain, 3);
-   view = new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
+   if (view == null) view = createMapView();
 
    c = new Client(this, "sharedstory.herokuapp.com", 80);
    c.write("GET / HTTP/1.1\r\n");
@@ -60,35 +60,39 @@ void draw() {
 }
 
 void addTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
 
   println("ADD", id);
-  String postBody = 0 + " " + id + " " + x + " " + y + "\n"; // TODO POST request
   view.handle_add_fiducial(id, x, y, model);
 }
 
 void removeTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
 
   println("REMOVE", id);
-  String postBody = 1 + " " + id + " " + x + " " + y + "\n"; // TODO POST request
   view.handle_remove_fiducial(id, x, y, model);
 }
 
 void updateTuioObject(TuioObject obj) {
+  if (view == null) view = createMapView();
   int id = obj.getSymbolID();
   float x = obj.getX();
   float y = obj.getY();
 
   println("MOVE", id, x, y);
-  String postBody = 2 + " " + id + " " + x + " " + y + "\n"; // TODO POST Request
   view.handle_move_fiducial(id, x, y, model);
 }
 
 void keyPressed() {
   view.handle_key_pressed(keyCode);
+}
+
+TUIOMapView createMapView() {
+  return new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, 576, 576);
 }
