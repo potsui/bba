@@ -1,16 +1,12 @@
 import TUIO.*;
-import processing.net.*; 
 
 int SCREEN_WIDTH = 576;
 int SCREEN_HEIGHT = 576;
 
 TuioProcessing tuioClient;
-Client c;
 
 MapModel model;
 TUIOMapView view;
-
-String data;
 
 int[][] terrain = {
   { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, 
@@ -47,19 +43,10 @@ void setup() {
   tuioClient  = new TuioProcessing(this);
   model = new MapModel(terrain, 3);
   if (view == null) view = createMapView();
-
-  c = new Client(this, "sharedstory.herokuapp.com", 80);
-  c.write("GET / HTTP/1.1\r\n");
-  c.write("Host: sharedstory.herokuapp.com\r\n");
-  c.write("\r\n");
 }
 
 void draw() {
   view.render(model);
-  if (c.available() > 0) {
-    data += c.readString();
-    println(data);
-  }
 }
 
 void addTuioObject(TuioObject obj) {
@@ -97,5 +84,5 @@ void keyPressed() {
 }
 
 TUIOMapView createMapView() {
-  return new TUIOMapView(24, 24, 0, 0, 1, 1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  return new TUIOMapView(this, 24, 24, 0, 0, 1, 1, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }

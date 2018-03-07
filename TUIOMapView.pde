@@ -1,11 +1,23 @@
 import java.util.Map;
 
+// GLOBALS
 int ROWS_OF_TEXT = 2;
 int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
 int TEXT_OFFSET_RIGHT = 185;
 
+// FIDUCIALS
+int MAP_FIDUCIAL_STANFORD = 0;
+int MAP_FIDUCIAL_PALOALTO = 1;
+int MAP_FIDUCIAL_EPA = 2;
+int EVENT_FIDUCIAL_PER = 3;
+int EVENT_FIDUCIAL_COM = 4;
+int EVENT_FIDUCIAL_GLO = 5;
+int SAVE_FIDUCIAL = 10;
+
 class TUIOMapView {
+  PApplet sketchRef;
+  DatabaseServer db;
   int cols, rows;
   Frame camera_frame, map_frame, text_frame, map_fiducial_frame;
   MapCellView[][] cell_views;
@@ -14,14 +26,19 @@ class TUIOMapView {
   PImage timeline;
   HashMap<Integer,Fiducial> fiducials;
   int lastMoved;
+  String data;
+  String mapName;
   
   TUIOMapView(
+      PApplet _sketchRef,
       int _cols, int _rows, 
       int x_in, int y_in, int width_in, int height_in, 
       int x_out, int y_out, int width_out, int height_out
   ) {
+    sketchRef = _sketchRef;
     cols = _cols;
     rows = _rows;
+    db = new DatabaseServer(sketchRef, null, 0);
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
     map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55); //TODO: Don't hardcode values
@@ -37,6 +54,7 @@ class TUIOMapView {
 
     base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
+    mapName = "";
 
     tiles = new PImage[] {
       loadImage("tiles/blank.png"),
@@ -101,14 +119,13 @@ class TUIOMapView {
     }
 
     fill(0);
-    int row = 0;
-    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
-    text("and other significant places.", text_frame.x, text_frame.get_y(row++));
-    text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
-    text("you last touched.", text_frame.x, text_frame.get_y(row++));
+    loadTextPrompt();
+    data = db.getData();
+    if (data != null) println(data);
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
+    if (id == SAVE_FIDUCIAL) db.sendSessionData(mapName, fiducials);
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
@@ -141,39 +158,7 @@ class TUIOMapView {
        new_cell_model.add_hospital();
        f.setModel(new_cell_model);
     }
-
-    //  Change map based on fiducial in map square & change to city icons
-    //TODO: Place in separate functio and do for add_fiducial too
-    if ((id == 0) &&
-        (col >= 1) && (col <= 3) && 
-        (row >= 1) && (row <= 3)){
-      base_map = loadImage("sf-map.png");;
-      new_cell_model.is_sf(); // Change icon to SF
-    }
-    if ((id == 1) &&
-        (col >= 1) && (col <= 3) && 
-        (row >= 1) && (row <= 3)){
-      base_map = loadImage("palo_alto.png");;
-      new_cell_model.is_pa(); // Change icon to PA
-
-    }
-    if ((id == 2) &&
-        (col >= 1) && (col <= 3) && 
-        (row >= 1) && (row <= 3)){
-      base_map = loadImage("east_palo_alto.png");; 
-      new_cell_model.is_epa(); // Change icon to EPA
-    }
-    
-    // Change icons to event fiducials
-    if (id == 3){ 
-      new_cell_model.is_per(); // Change icon to PER
-    }
-    if (id == 4){ 
-      new_cell_model.is_com(); // Change icon to COM
-    }
-    if (id == 5){ 
-      new_cell_model.is_glo(); // Change icon to GLO
-    }
+    new_cell_model = changeIcon(id, row, col, new_cell_model);
     f.setX(x);
     f.setY(y);
     fiducials.put(id, f);
@@ -195,5 +180,49 @@ class TUIOMapView {
       f.setText(input);
       println(input);
     }
+  }
+
+  // Change map and event icon based on fiducial id
+  MapCellModel changeIcon(int id, int row, int col, MapCellModel new_cell_model) {
+    boolean inMapSquare = inMapSquare(row, col);
+    
+    if (id == MAP_FIDUCIAL_STANFORD) {
+      if (inMapSquare) {
+        base_map = loadImage("sf-map.png");
+        mapName = "stanford";
+      }
+      new_cell_model.is_sf();
+    } else if (id == MAP_FIDUCIAL_PALOALTO) {
+      if (inMapSquare) {
+        base_map = loadImage("palo_alto.png");
+        mapName = "paloalto";
+      }
+      new_cell_model.is_pa(); // Change icon to PA
+    } else if (id == MAP_FIDUCIAL_EPA) {
+      if (inMapSquare) {
+        base_map = loadImage("east_palo_alto.png");
+        mapName = "epa";
+      }
+      new_cell_model.is_epa(); // Change icon to PA
+    } else if (id == EVENT_FIDUCIAL_PER){ 
+      new_cell_model.is_per();
+    } else if (id == EVENT_FIDUCIAL_COM){ 
+      new_cell_model.is_com();
+    } else if (id == EVENT_FIDUCIAL_GLO){ 
+      new_cell_model.is_glo();
+    }
+    return new_cell_model;
+  }
+
+  boolean inMapSquare(int row, int col) {
+    return col >= 1 && col <= 3 && row >= 1 && row <= 3;
+  }
+
+  void loadTextPrompt() {
+    int row = 0;
+    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
+    text("and other significant places.", text_frame.x, text_frame.get_y(row++));
+    text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
+    text("you last touched.", text_frame.x, text_frame.get_y(row++));
   }
 }
