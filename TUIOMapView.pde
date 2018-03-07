@@ -54,7 +54,7 @@ class TUIOMapView {
 
     base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
-    mapName = "";
+    mapName = "default";
 
     tiles = new PImage[] {
       loadImage("tiles/blank.png"),
