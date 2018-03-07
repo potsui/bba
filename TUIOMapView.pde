@@ -107,11 +107,7 @@ class TUIOMapView {
     }
 
     fill(0);
-    int row = 0;
-    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
-    text("and other significant places.", text_frame.x, text_frame.get_y(row++));
-    text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
-    text("you last touched.", text_frame.x, text_frame.get_y(row++));
+    loadTextPrompt();
     data = db.getData();
     if (data != null) println(data);
   }
@@ -204,5 +200,13 @@ class TUIOMapView {
       f.setText(input);
       println(input);
     }
+  }
+
+  void loadTextPrompt() {
+    int row = 0;
+    text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
+    text("and other significant places.", text_frame.x, text_frame.get_y(row++));
+    text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
+    text("you last touched.", text_frame.x, text_frame.get_y(row++));
   }
 }
