@@ -25,11 +25,12 @@ class DatabaseServer {
   }
 
   void sendSessionData(String map, HashMap<Integer,Fiducial> fiducials) {
+    println("SENDING SESSION DATA");
     String jsonBody = createJsonString(map, fiducials);
     c.write("POST /session/add HTTP/1.1\r\n");
     c.write("Host: " + SERVER + "\r\n");
     c.write("Content-Type: application/json\r\n");
-    c.write("Content-Length: 20\r\n");
+    c.write("Content-Length: " + jsonBody.length() + "\r\n");
     c.write("\r\n");
     c.write(jsonBody + "\r\n");
     c.write("\r\n");
@@ -40,13 +41,14 @@ class DatabaseServer {
     json.put("map", map);
   
     JSONArray markers = new JSONArray();
-    for (int i = 0; i < fiducials.size(); i++) {
-      Fiducial f = fiducials.get(i);
+    int i = 0;
+    for (int id: fiducials.keySet()) {
+      Fiducial f = fiducials.get(id);
       JSONObject item = new JSONObject();
       item.put("x", f.getX());
       item.put("y", f.getY());
       item.put("text", f.getText());
-      markers.setJSONObject(i, item);
+      markers.setJSONObject(i++, item);
     }
     json.put("markers", markers);
   
