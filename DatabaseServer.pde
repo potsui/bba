@@ -24,17 +24,18 @@ class DatabaseServer {
     c.write("\r\n");
   }
 
-  void sendSessionData() {
+  void sendSessionData(String map, HashMap<Integer,Fiducial> fiducials) {
+    String jsonBody = createJsonString(map, fiducials);
     c.write("POST /session/add HTTP/1.1\r\n");
     c.write("Host: " + SERVER + "\r\n");
     c.write("Content-Type: application/json\r\n");
     c.write("Content-Length: 20\r\n");
     c.write("\r\n");
-    c.write("{\"key\": \"value\"}\r\n");
+    c.write(jsonBody + "\r\n");
     c.write("\r\n");
   }
 
-  String createJsonString(String map, HashMap<Integer,Fiducial> fiducials) {
+  private String createJsonString(String map, HashMap<Integer,Fiducial> fiducials) {
     JSONObject json = new JSONObject();
     json.put("map", map);
   
