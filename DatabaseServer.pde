@@ -14,10 +14,7 @@ class DatabaseServer {
   }
 
   String getData() {
-    if (c.available() > 0) {
-      data += c.readString();
-      return data;
-    }
+    if (c.available() > 0) return c.readString();
     return null;
   }
   
