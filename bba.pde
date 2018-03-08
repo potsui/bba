@@ -43,6 +43,7 @@ void setup() {
   tuioClient  = new TuioProcessing(this);
   model = new MapModel(terrain, 3);
   if (view == null) view = createMapView();
+  fullScreen();
 }
 
 void draw() {

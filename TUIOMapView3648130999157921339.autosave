@@ -6,17 +6,6 @@ int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
 int TEXT_OFFSET_RIGHT = 185;
 
-// MAP FIDUCIAL FRAME (MFF)
-
-int mff_cols;
-int mff_rows;
-int mff_x;
-int mff_y;
-int mff_hw;
-int mff_colrow_ratio = 8; // ratio of map fiducial columns
-int mff_xy_ratio = 20; // ratio of map square positioning
-int mff_hw_ratio = 10; // ratio of map square height and width
-
 // FIDUCIALS
 int MAP_FIDUCIAL_STANFORD = 0;
 int MAP_FIDUCIAL_PALOALTO = 1;
@@ -49,15 +38,10 @@ class TUIOMapView {
     sketchRef = _sketchRef;
     cols = _cols;
     rows = _rows;
-    mff_cols = _cols/mff_colrow_ratio;
-    mff_rows = _rows/mff_colrow_ratio;
-    mff_x = width_out/mff_xy_ratio;
-    mff_y = height_out/mff_xy_ratio;
-    mff_hw = width_out/mff_hw_ratio; 
     db = new DatabaseServer(sketchRef, null, 0);
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
-    map_fiducial_frame = new Frame(mff_cols, mff_rows, mff_x, mff_y, mff_hw, mff_hw); //TODO: Don't hardcode values
+    map_fiducial_frame = new Frame(3, 3, 30, 20, 55, 55); //TODO: Don't hardcode values
     text_frame = new Frame(
       1, 
       ROWS_OF_TEXT, 
@@ -66,7 +50,7 @@ class TUIOMapView {
       1, 
       ROWS_OF_TEXT * TEXT_LINE_HEIGHT
     );
-    fiducials = new HashMap<Integer,Fiducial>();
+    fiducials = new HfashMap<Integer,Fiducial>();
 
     base_map = loadImage("sf-map.png");;
     timeline = loadImage("timeline.png");
@@ -231,7 +215,7 @@ class TUIOMapView {
   }
 
   boolean inMapSquare(int row, int col) {
-    return col >= 1 && col <= mff_cols && row >= 1 && row <= mff_rows;
+    return col >= 1 && col <= 3 && row >= 1 && row <= 3;
   }
 
   void loadTextPrompt() {
