@@ -99,14 +99,15 @@ class TUIOMapView {
   
   void render(MapModel model) {
     background(255);
-    image(base_map, map_frame.x, 
+    image(base_map, map_frame.x, // edited to make map & timeline fullscreen
           map_frame.y,
           map_frame.frame_width,
           base_map.height * map_frame.frame_width / base_map.width);
     image(timeline, map_frame.x, 
-          map_frame.y + map_frame.frame_width - timeline.height,
+          map_frame.y + map_frame.frame_height - timeline.height,
           map_frame.frame_width,
-          base_map.height * map_frame.frame_width / base_map.width);
+          timeline.height * map_frame.frame_width / timeline.width);
+    println("timeline height is ", timeline.height);
      // Create the map-fiducial-holder square 
     stroke(0, 0, 0);
     fill(0, 0, 0, 20);

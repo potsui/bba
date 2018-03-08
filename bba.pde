@@ -1,7 +1,7 @@
 import TUIO.*;
 
-int SCREEN_WIDTH = 576;
-int SCREEN_HEIGHT = 576;
+int SCREEN_WIDTH = 1280;
+int SCREEN_HEIGHT = 800;
 
 TuioProcessing tuioClient;
 
