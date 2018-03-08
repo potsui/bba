@@ -36,7 +36,8 @@ int[][] terrain = {
 };
 
 void settings() {
-  size(576, 576);
+  fullScreen(); // make the map fullscreen
+//  size(576, 576); (old size)
 }
 
 void setup() {
