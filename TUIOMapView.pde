@@ -49,7 +49,7 @@ class TUIOMapView {
     sketchRef = _sketchRef;
     cols = _cols;
     rows = _rows;
-    mff_cols = _cols/mff_colrow_ratio;
+    mff_cols = _cols/mff_colrow_ratio; 
     mff_rows = _rows/mff_colrow_ratio;
     mff_x = width_out/mff_xy_ratio;
     mff_y = height_out/mff_xy_ratio;
@@ -57,7 +57,7 @@ class TUIOMapView {
     db = new DatabaseServer(sketchRef, null, 0);
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
-    map_fiducial_frame = new Frame(mff_cols, mff_rows, mff_x, mff_y, mff_hw, mff_hw); //TODO: Don't hardcode values
+    map_fiducial_frame = new Frame(mff_cols, mff_rows, mff_x, mff_y, mff_hw, mff_hw); 
     text_frame = new Frame(
       1, 
       ROWS_OF_TEXT, 

@@ -36,14 +36,14 @@ int[][] terrain = {
 };
 
 void settings() {
-  size(576, 576);
+  fullScreen(); // make the map fullscreen
+//  size(576, 576); (old size)
 }
 
 void setup() {
   tuioClient  = new TuioProcessing(this);
   model = new MapModel(terrain, 3);
   if (view == null) view = createMapView();
-  fullScreen();
 }
 
 void draw() {
