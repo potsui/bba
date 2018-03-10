@@ -68,7 +68,7 @@ class TUIOMapView {
     );
     fiducials = new HashMap<Integer,Fiducial>();
 
-    base_map = loadImage("sf-map.png");;
+    base_map = loadImage("stanford.png");;
     timeline = loadImage("timeline.png");
     mapName = "default";
 
@@ -103,6 +103,12 @@ class TUIOMapView {
           map_frame.y,
           map_frame.frame_width,
           base_map.height * map_frame.frame_width / base_map.width);
+    fill(0, 0, 0, 60); // add transparent background to timeline
+    stroke(0, 0, 0, 0);
+    rect(map_frame.x,  
+          map_frame.y + map_frame.frame_height - timeline.height/1.5,
+          map_frame.frame_width,
+          timeline.height * map_frame.frame_width / timeline.width);
     image(timeline, map_frame.x, 
           map_frame.y + map_frame.frame_height - timeline.height,
           map_frame.frame_width,
@@ -205,7 +211,7 @@ class TUIOMapView {
     
     if (id == MAP_FIDUCIAL_STANFORD) {
       if (inMapSquare) {
-        base_map = loadImage("sf-map.png");
+        base_map = loadImage("stanford.png");
         mapName = "stanford";
       }
       new_cell_model.is_sf();
