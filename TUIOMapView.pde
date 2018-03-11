@@ -24,6 +24,12 @@ int MAP_FIDUCIAL_EPA = 2;
 int EVENT_FIDUCIAL_PER = 3;
 int EVENT_FIDUCIAL_COM = 4;
 int EVENT_FIDUCIAL_GLO = 5;
+int EVENT_FIDUCIAL_HOME = 11;
+int EVENT_FIDUCIAL_SCHOOL = 12;
+int EVENT_FIDUCIAL_CHURCH = 13;
+int EVENT_FIDUCIAL_TREE = 14;
+int EVENT_FIDUCIAL_PROTESTER = 15;
+int EVENT_FIDUCIAL_STREET = 16;
 int SAVE_FIDUCIAL = 10;
 
 class TUIOMapView {
@@ -80,7 +86,13 @@ class TUIOMapView {
       loadImage("tiles/epaicon.png"),
       loadImage("tiles/personal_icon.png"),
       loadImage("tiles/community_icon.png"),
-      loadImage("tiles/global_icon.png")
+      loadImage("tiles/global_icon.png"),
+      loadImage("tiles/home.png"),
+      loadImage("tiles/school.png"),
+      loadImage("tiles/church.png"),
+      loadImage("tiles/tree.png"),
+      loadImage("tiles/protester.png"),
+      loadImage("tiles/street.png")
     };
 
     cell_views = new MapCellView[rows][cols];
@@ -113,7 +125,6 @@ class TUIOMapView {
           map_frame.y + map_frame.frame_height - timeline.height,
           map_frame.frame_width,
           timeline.height * map_frame.frame_width / timeline.width);
-    println("timeline height is ", timeline.height);
      // Create the map-fiducial-holder square 
     stroke(0, 0, 0);
     fill(0, 0, 0, 20);
@@ -181,6 +192,7 @@ class TUIOMapView {
        new_cell_model.add_hospital();
        f.setModel(new_cell_model);
     }
+  //  println("fiducial id is ", f.id, " fiducial text is ", f.text, " fiducial x is ", f.x, " fiducial y is ", f.y); // test which fiducial
     new_cell_model = changeIcon(id, row, col, new_cell_model);
     f.setX(x);
     f.setY(y);
@@ -233,6 +245,18 @@ class TUIOMapView {
       new_cell_model.is_com();
     } else if (id == EVENT_FIDUCIAL_GLO){ 
       new_cell_model.is_glo();
+    } else if (id == EVENT_FIDUCIAL_HOME){ 
+      new_cell_model.is_home();
+    } else if (id == EVENT_FIDUCIAL_SCHOOL){ 
+      new_cell_model.is_school();
+    } else if (id == EVENT_FIDUCIAL_CHURCH){ 
+      new_cell_model.is_church();
+    } else if (id == EVENT_FIDUCIAL_TREE){ 
+      new_cell_model.is_tree();
+    } else if (id == EVENT_FIDUCIAL_PROTESTER){ 
+      new_cell_model.is_protester();
+    } else if (id == EVENT_FIDUCIAL_STREET){ 
+      new_cell_model.is_street();
     }
     return new_cell_model;
   }
