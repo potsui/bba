@@ -45,6 +45,7 @@ class DatabaseServer {
     for (int id: fiducials.keySet()) {
       Fiducial f = fiducials.get(id);
       JSONObject item = new JSONObject();
+      item.put("icon", id);
       item.put("x", f.getX());
       item.put("y", f.getY());
       item.put("text", f.getText());

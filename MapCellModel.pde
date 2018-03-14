@@ -74,6 +74,10 @@ class MapCellModel {
     tile_type = 16;
   }
 
+  int get_tile_type() {
+    return tile_type;
+  }
+
   // Defines how MapCellModels should be compared with each other
   // for equality. Here, two MapCellModels are equal if they 
   // share i and j. 
