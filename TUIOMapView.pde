@@ -45,6 +45,7 @@ class TUIOMapView {
   int lastMoved;
   String data;
   String mapName;
+  boolean inSaveMode;
   
   TUIOMapView(
       PApplet _sketchRef,
@@ -159,7 +160,12 @@ class TUIOMapView {
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
-    if (id == SAVE_FIDUCIAL) db.sendSessionData(mapName, fiducials);
+    if (inSaveMode) return;
+    if (id == SAVE_FIDUCIAL) {
+      inSaveMode = true;
+      db.sendSessionData(mapName, fiducials);
+      return;
+    }
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
@@ -171,6 +177,10 @@ class TUIOMapView {
   
   void handle_remove_fiducial(int id, float x, float y, MapModel model) {
     if (fiducials.size()==0) return;
+    if (inSaveMode) {
+      if (id == SAVE_FIDUCIAL) inSaveMode = false;
+      else return;
+    }
     lastMoved = -1;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
@@ -180,7 +190,7 @@ class TUIOMapView {
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
-    if (fiducials.size()==0) return;
+    if (fiducials.size()==0 || inSaveMode) return;
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
@@ -200,21 +210,21 @@ class TUIOMapView {
   }
   
   void handle_key_pressed(int keyCode) {
-    if (fiducials.size() > 0) {
-      Fiducial f = fiducials.get(lastMoved);
-      String input = f.getText();
-      if (keyCode == BACKSPACE) {
-        if (input.length() > 0) {
-          input = input.substring(0, input.length()-1);
-        }
-      } else if (keyCode == DELETE) {
-        input = "";
-      } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
-        input = input + key;
+    if (fiducials.size() == 0 || inSaveMode) return;
+    Fiducial f = fiducials.get(lastMoved);
+    if (f == null) return;
+    String input = f.getText();
+    if (keyCode == BACKSPACE) {
+      if (input.length() > 0) {
+        input = input.substring(0, input.length()-1);
       }
-      f.setText(input);
-      println(input);
+    } else if (keyCode == DELETE) {
+      input = "";
+    } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
+      input = input + key;
     }
+    f.setText(input);
+    println(input);
   }
 
   // Change map and event icon based on fiducial id
