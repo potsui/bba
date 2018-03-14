@@ -162,8 +162,10 @@ class TUIOMapView {
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
     if (inSaveMode) return;
     if (id == SAVE_FIDUCIAL) {
-      inSaveMode = true;
-      db.sendSessionData(mapName, fiducials);
+      if (fiducials.size() > 0) {
+        inSaveMode = true;
+        db.sendSessionData(mapName, fiducials);
+      }
       return;
     }
     lastMoved = id;
@@ -179,7 +181,7 @@ class TUIOMapView {
     if (fiducials.size()==0) return;
     if (inSaveMode) {
       if (id == SAVE_FIDUCIAL) inSaveMode = false;
-      else return;
+      return;
     }
     lastMoved = -1;
     int col = camera_frame.get_col(x);
@@ -190,7 +192,7 @@ class TUIOMapView {
   }
   
   void handle_move_fiducial(int id, float x, float y, MapModel model) {
-    if (fiducials.size()==0 || inSaveMode) return;
+    if (fiducials.size()==0 || inSaveMode || id == SAVE_FIDUCIAL) return;
     lastMoved = id;
     int col = camera_frame.get_col(x);
     int row = camera_frame.get_row(y);
