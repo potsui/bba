@@ -4,7 +4,7 @@ import java.util.Map;
 int ROWS_OF_TEXT = 2;
 int TEXT_LINE_HEIGHT = 14;
 int TEXT_OFFSET_TOP = 20;
-int TEXT_OFFSET_RIGHT = 185;
+int TEXT_OFFSET_RIGHT = 280;
 
 // MAP FIDUCIAL FRAME (MFF)
 
@@ -30,7 +30,7 @@ int EVENT_FIDUCIAL_CHURCH = 13;
 int EVENT_FIDUCIAL_TREE = 14;
 int EVENT_FIDUCIAL_PROTESTER = 15;
 int EVENT_FIDUCIAL_STREET = 16;
-int SAVE_FIDUCIAL = 10;
+int SAVE_FIDUCIAL = 9;
 
 class TUIOMapView {
   PApplet sketchRef;
@@ -123,7 +123,7 @@ class TUIOMapView {
           map_frame.frame_width,
           timeline.height * map_frame.frame_width / timeline.width);
     image(timeline, map_frame.x, 
-          map_frame.y + map_frame.frame_height - timeline.height,
+          map_frame.y + map_frame.frame_height - timeline.height - 60,
           map_frame.frame_width,
           timeline.height * map_frame.frame_width / timeline.width);
      // Create the map-fiducial-holder square 
@@ -278,7 +278,7 @@ class TUIOMapView {
   }
 
   void loadTextPrompt() {
-    int row = 0;
+    int row = 3;
     text("Place markers on your home", text_frame.x, text_frame.get_y(row++));
     text("and other significant places.", text_frame.x, text_frame.get_y(row++));
     text("Type to add text to the marker", text_frame.x, text_frame.get_y(row++));
