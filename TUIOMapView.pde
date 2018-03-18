@@ -61,7 +61,7 @@ class TUIOMapView {
     mff_x = width_out/mff_xy_ratio;
     mff_y = height_out/mff_xy_ratio;
     mff_hw = width_out/mff_hw_ratio; 
-    db = new DatabaseServer(sketchRef, null, 0);
+
     camera_frame = new Frame(cols, rows, x_in, x_out, width_in, height_in);
     map_frame = new Frame(cols, rows, x_out, y_out, width_out, height_out);
     map_fiducial_frame = new Frame(mff_cols, mff_rows, mff_x, mff_y, mff_hw, mff_hw); 
@@ -155,8 +155,6 @@ class TUIOMapView {
 
     fill(0);
     loadTextPrompt();
-    data = db.getData();
-    if (data != null) println(data);
   }
   
   void handle_add_fiducial(int id, float x, float y, MapModel model) {
@@ -164,6 +162,7 @@ class TUIOMapView {
     if (id == SAVE_FIDUCIAL) {
       if (fiducials.size() > 0) {
         inSaveMode = true;
+        db = new DatabaseServer(sketchRef, null, 0);
         db.sendSessionData(mapName, fiducials);
       }
       return;
